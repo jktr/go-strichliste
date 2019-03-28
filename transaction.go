@@ -7,16 +7,23 @@ import (
 )
 
 type (
+	// An ArticleClient carries the necessary context to
+	// interact with the /transaction endpoint.
 	TransactionClient struct {
 		client *Client
 	}
+
+	// TransactionContext extends the TransactionClient
+	// with additional user-specific context.
 	TransactionContext struct {
 		TransactionClient
-		issuer  int
-		comment string
+		issuer  int    // user context
+		comment string // stored here to allow easy reuse for many tx's
 	}
 )
 
+// Create a user-specific context by user ID, which allows issuing
+// transactions as that user.
 func (c *TransactionClient) Context(user int) *TransactionContext {
 	ctx := &TransactionContext{
 		issuer: user,
@@ -25,12 +32,15 @@ func (c *TransactionClient) Context(user int) *TransactionContext {
 	return ctx
 }
 
+// Set the comment to use for all new transactions that use the returned context.
 func (c *TransactionContext) WithComment(comment string) *TransactionContext {
 	ctx := *c
 	ctx.comment = comment
 	return &ctx
 }
 
+// Utility wrapper for Create.
+// Deposit or withdraw funds for the current User; returns the created transaction.
 func (c *TransactionContext) Delta(amount int) (*schema.Transaction, *Response, error) {
 	tcr := &schema.TransactionCreateRequest{
 		Amount: amount,
@@ -38,6 +48,8 @@ func (c *TransactionContext) Delta(amount int) (*schema.Transaction, *Response, 
 	return c.Create(tcr)
 }
 
+// Utility wrapper for Create.
+// Purchase a number of articles by ID with the current user; returns the created transaction.
 func (c *TransactionContext) Purchase(article int, count int) (*schema.Transaction, *Response, error) {
 	tcr := &schema.TransactionCreateRequest{
 		ArticleID: &article,
@@ -46,6 +58,8 @@ func (c *TransactionContext) Purchase(article int, count int) (*schema.Transacti
 	return c.Create(tcr)
 }
 
+// Utility wrapper for Create.
+// Transfer an amount of funds from the current user to another by ID; returns the created transaction.
 func (c *TransactionContext) TransferFunds(recipient int, amount int) (*schema.Transaction, *Response, error) {
 	tcr := &schema.TransactionCreateRequest{
 		Amount:    amount,
@@ -54,6 +68,13 @@ func (c *TransactionContext) TransferFunds(recipient int, amount int) (*schema.T
 	return c.Create(tcr)
 }
 
+// POST /user/{userId}/transaction
+//
+// Creates a raw transaction and returns it.
+// Consider using these wrappers for specific use-cases:
+//   - Delta
+//   - Purchase
+//   - TransferFunds
 func (c *TransactionContext) Create(trc *schema.TransactionCreateRequest) (*schema.Transaction, *Response, error) {
 	path := fmt.Sprintf("%s/%d%s",
 		schema.EndpointUser, c.issuer, schema.EndpointTransaction)
@@ -75,6 +96,9 @@ func (c *TransactionContext) Create(trc *schema.TransactionCreateRequest) (*sche
 	return &body.Transaction, resp, nil
 }
 
+// GET /user/{userId}/transaction/{txId}
+//
+// Retrieves a transaction by ID.
 func (c *TransactionContext) Get(id int) (*schema.Transaction, *Response, error) {
 	path := fmt.Sprintf("%s/%d%s/%d",
 		schema.EndpointUser, c.issuer, schema.EndpointTransaction, id)
@@ -92,6 +116,10 @@ func (c *TransactionContext) Get(id int) (*schema.Transaction, *Response, error)
 	return &body.Transaction, resp, nil
 }
 
+// GET /user/{userId}/transaction
+//
+// Retrieves a list of transactions issued by this user.
+// Pagination is possible via ListOpts, which can be nil.
 func (c *TransactionContext) List(opt *ListOpts) ([]schema.Transaction, *Response, error) {
 	path := fmt.Sprintf("%s/%d%s?%s", schema.EndpointUser, c.issuer,
 		schema.EndpointTransaction, opt.values().Encode())
@@ -110,6 +138,11 @@ func (c *TransactionContext) List(opt *ListOpts) ([]schema.Transaction, *Respons
 	return body.Transactions, resp, nil
 }
 
+// DELETE /user/{userId}/transaction
+//
+// Revert a transaction by ID; returns the reversed transaction.
+// Not all transactions are reversible; check Transaction.IsReversible.
+// Note that actual deletion is not possible.
 func (c *TransactionContext) Revert(id int) (*schema.Transaction, *Response, error) {
 	path := fmt.Sprintf("%s/%d%s/%d", schema.EndpointUser,
 		c.issuer, schema.EndpointTransaction, id)

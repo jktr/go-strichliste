@@ -13,7 +13,7 @@ type Transaction struct {
 	IsReversible bool `json:"isDeletable"`
 
 	// only when sending money
-	From *User `json:"sender"`
+	From *User `json:"sender"` // TODO always empty?
 	To   *User `json:"recipient"`
 
 	// only when buying articles

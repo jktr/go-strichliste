@@ -18,12 +18,22 @@ const (
 )
 
 type (
+	// Aliasing string allows us to implement a coustom JSON
+	// Decoder that parses error paths like
+	// "App\\Exception\\FooBar" as "FooBar"
 	ErrorClass string
 
+	// Structure of an API error
 	ErrorResponse struct {
-		Class   ErrorClass `json:"class"`
-		Code    int        `json:"code"`
-		Message string     `json:"message"`
+		Class   ErrorClass `json:"class"`   // type of error
+		Message string     `json:"message"` // human-readable description of error
+
+		// HTTP error code. Note that the server actually
+		// returns 500 and only sets this code in its JSON
+		// response. We omit this because of this behaviour,
+		// and because Class already uniquely identifies an
+		// error type
+		code int `json:"code"`
 	}
 
 	SingleErrorResponse struct {

@@ -6,10 +6,15 @@ import (
 	"net/http"
 )
 
+// An ArticleClient carries the necessary context to interact
+// with the /article endpoint
 type ArticleClient struct {
 	client *Client
 }
 
+// POST /article
+//
+// Creates a new article and returns it.
 func (s *ArticleClient) Create(article *schema.ArticleCreateRequest) (*schema.Article, *Response, error) {
 	req, err := s.client.NewRequest(http.MethodPost, schema.EndpointArticle, article)
 	if err != nil {
@@ -24,6 +29,9 @@ func (s *ArticleClient) Create(article *schema.ArticleCreateRequest) (*schema.Ar
 	return &body.Article, resp, nil
 }
 
+// GET /article/{articleId}
+//
+// Retrieves an article by ID.
 func (s *ArticleClient) Get(id int) (*schema.Article, *Response, error) {
 	path := fmt.Sprintf("%s/%d", schema.EndpointArticle, id)
 
@@ -40,6 +48,10 @@ func (s *ArticleClient) Get(id int) (*schema.Article, *Response, error) {
 	return &body.Article, resp, nil
 }
 
+// GET /article
+//
+// Retrieves a list of articles (both active and inactive).
+// Pagination is possible via ListOpts, which can be nil.
 func (s *ArticleClient) List(opt *ListOpts) ([]schema.Article, *Response, error) {
 	path := fmt.Sprintf("%s?%s", schema.EndpointArticle, opt.values().Encode())
 
@@ -78,14 +90,29 @@ func (s *ArticleClient) searchByX(x, query string, opt *ListOpts) ([]schema.Arti
 	return body.Articles, resp, nil
 }
 
+// GET /article/search
+//
+// Retrieves a list of articles whose names match, or include, the
+// passed name. Pagination is possible via ListOpts, which can be nil.
 func (s *ArticleClient) SearchByName(name string, opt *ListOpts) ([]schema.Article, *Response, error) {
 	return s.searchByX("query", name, opt)
 }
 
+// GET /article/search
+//
+// Retrieves a list of articles whose barcodes match, or include, the
+// passed barcode. Pagination is possible via ListOpts, which can be nil.
 func (s *ArticleClient) SearchByBarcode(barcode string, opt *ListOpts) ([]schema.Article, *Response, error) {
 	return s.searchByX("barcode", string(barcode), opt)
 }
 
+// POST /article/{articleId}
+//
+// Updates an article by ID. Note that this operation checks for
+// referential integrity and may not update the article, but instead
+// create a new one, referencing and deactivating the old version.
+// The returned article is always new version — either replaced or
+// updated.
 func (s *ArticleClient) Update(id int, article *schema.ArticleUpdateRequest) (*schema.Article, *Response, error) {
 	path := fmt.Sprintf("%s/%d", schema.EndpointArticle, id)
 
@@ -102,6 +129,10 @@ func (s *ArticleClient) Update(id int, article *schema.ArticleUpdateRequest) (*s
 	return &body.Article, resp, nil
 }
 
+// DELETE /article/{articleId}
+//
+// Deactivates an article by ID; returns the deactivated article.
+// Note that actual deletion is not possible.
 func (s *ArticleClient) Deactivate(id int) (*schema.Article, *Response, error) {
 	path := fmt.Sprintf("%s/%d", schema.EndpointArticle, id)
 

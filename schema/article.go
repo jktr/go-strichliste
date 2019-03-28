@@ -15,12 +15,12 @@ type Article struct {
 	TimeCreated Timestamp `json:"created"`
 
 	/*
-	   Note that omit usageCount has insufficiently specified semantics.
+	  usageCount is omitted because it has insufficiently specified semantics
 	    - unclear meaning when reversing transactions
 	    - unclear accounting period
-	    - unclear interaction with "precursor" Articles
+	    - unclear meaning if "precursor" Articles exist
 	*/
-	UsageCount int `json:"usageCount"`
+	usageCount int `json:"usageCount"`
 }
 
 type ArticleCreateRequest struct {
