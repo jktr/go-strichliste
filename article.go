@@ -57,7 +57,7 @@ func (s *ArticleClient) List(opt *ListOpts) ([]schema.Article, *Response, error)
 	return body.Articles, resp, nil
 }
 
-func (s *ArticleClient) lookupByX(x, query string, opt *ListOpts) ([]schema.Article, *Response, error) {
+func (s *ArticleClient) searchByX(x, query string, opt *ListOpts) ([]schema.Article, *Response, error) {
 
 	v := opt.values()
 	v.Add(x, query)
@@ -78,12 +78,12 @@ func (s *ArticleClient) lookupByX(x, query string, opt *ListOpts) ([]schema.Arti
 	return body.Articles, resp, nil
 }
 
-func (s *ArticleClient) LookupByName(name string, opt *ListOpts) ([]schema.Article, *Response, error) {
-	return s.lookupByX("query", name, opt)
+func (s *ArticleClient) SearchByName(name string, opt *ListOpts) ([]schema.Article, *Response, error) {
+	return s.searchByX("query", name, opt)
 }
 
-func (s *ArticleClient) LookupByBarcode(barcode string, opt *ListOpts) ([]schema.Article, *Response, error) {
-	return s.lookupByX("barcode", string(barcode), opt)
+func (s *ArticleClient) SearchByBarcode(barcode string, opt *ListOpts) ([]schema.Article, *Response, error) {
+	return s.searchByX("barcode", string(barcode), opt)
 }
 
 func (s *ArticleClient) Update(id int, article *schema.ArticleUpdateRequest) (*schema.Article, *Response, error) {

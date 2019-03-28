@@ -66,7 +66,7 @@ func (c *UserClient) List(opt *ListOpts) ([]schema.User, *Response, error) {
 	return body.Users, resp, nil
 }
 
-func (c *UserClient) Lookup(query string, opt *ListOpts) ([]schema.User, *Response, error) {
+func (c *UserClient) Search(query string, opt *ListOpts) ([]schema.User, *Response, error) {
 
 	v := opt.values()
 	v.Add("query", query)
