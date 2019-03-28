@@ -33,6 +33,8 @@ type (
 		User        UserClient
 		Transaction TransactionClient
 		Article     ArticleClient
+		Settings    SettingsClient
+		Metrics     MetricsClient
 	}
 
 	// Allows for result pagination and result limitation.
@@ -105,6 +107,8 @@ func NewClient(options ...ClientOption) *Client {
 	client.Article = ArticleClient{client: client}
 	client.User = UserClient{client: client}
 	client.Transaction = TransactionClient{client: client}
+	client.Settings = SettingsClient{client: client}
+	client.Metrics = MetricsClient{client: client}
 
 	return client
 }

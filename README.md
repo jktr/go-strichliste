@@ -11,11 +11,8 @@ Packages are
   * [strichliste](https://godoc.org/github.com/jktr/go-strichliste) — implements the REST client
   * [strichliste/schema](https://godoc.org/github.com/jktr/go-strichliste/schema) — contains the API schemata
 
-All of the currently documented API has been implemented. This means
-that the `/metrics` and `/settings` endpoints are notably missing.
-
-Test coverage is currently nonexistant, and the library is probably
-horribly buggy. Documentation is sorely lacking, too.
+All of the current API has been implemented, but test coverage is
+currently nonexistant, so the library is probably horribly buggy.
 
 There's a sister project to this library,
 [strichliste-cli](https://github.com/jktr/strichliste-cli),
