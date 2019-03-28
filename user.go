@@ -13,6 +13,7 @@ type UserClient struct {
 }
 
 // POST /user
+//   - ErrorUserAlreadyExists
 //
 // Creates a new user and returns it.
 func (c *UserClient) Create(user *schema.UserCreateRequest) (*schema.User, *Response, error) {
@@ -47,6 +48,7 @@ func (c *UserClient) getByX(x string) (*schema.User, *Response, error) {
 }
 
 // GET /user/{userId}
+//   - ErrorUserNotFound
 //
 // Retrieves a user by ID.
 func (c *UserClient) Get(id int) (*schema.User, *Response, error) {
@@ -54,6 +56,7 @@ func (c *UserClient) Get(id int) (*schema.User, *Response, error) {
 }
 
 // GET /user/{userID}
+//   - ErrorUserNotFound
 //
 // Retrieves a user by name.
 func (c *UserClient) GetByName(name string) (*schema.User, *Response, error) {
@@ -107,6 +110,10 @@ func (c *UserClient) Search(query string, opt *ListOpts) ([]schema.User, *Respon
 }
 
 // POST /user/{userId}
+//   - ErrorUserNotFound
+//   - ErrorUserAlreadyExists
+//   - ErrorParameterMissing
+//   - ErrorParameterInvalid
 //
 // Updates a user by ID and returns it.
 func (c *UserClient) Update(id int, user *schema.UserUpdateRequest) (*schema.User, *Response, error) {

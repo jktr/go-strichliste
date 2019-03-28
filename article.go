@@ -13,6 +13,8 @@ type ArticleClient struct {
 }
 
 // POST /article
+//   - ErrorParameterMissing
+//   - ErrorParameterInvalid
 //
 // Creates a new article and returns it.
 func (s *ArticleClient) Create(article *schema.ArticleCreateRequest) (*schema.Article, *Response, error) {
@@ -107,6 +109,9 @@ func (s *ArticleClient) SearchByBarcode(barcode string, opt *ListOpts) ([]schema
 }
 
 // POST /article/{articleId}
+//   - ErrorArticleNotFound
+//   - ErrorParameterMissing
+//   - ErrorParameterInvalid
 //
 // Updates an article by ID. Note that this operation checks for
 // referential integrity and may not update the article, but instead
@@ -130,6 +135,7 @@ func (s *ArticleClient) Update(id int, article *schema.ArticleUpdateRequest) (*s
 }
 
 // DELETE /article/{articleId}
+//   - ErrorArticleNotFound
 //
 // Deactivates an article by ID; returns the deactivated article.
 // Note that actual deletion is not possible.

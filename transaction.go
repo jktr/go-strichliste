@@ -39,7 +39,7 @@ func (c *TransactionContext) WithComment(comment string) *TransactionContext {
 	return &ctx
 }
 
-// Utility wrapper for Create.
+// Utility wrapper for Create; see Create for possible errors.
 // Deposit or withdraw funds for the current User; returns the created transaction.
 func (c *TransactionContext) Delta(amount int) (*schema.Transaction, *Response, error) {
 	tcr := &schema.TransactionCreateRequest{
@@ -48,7 +48,7 @@ func (c *TransactionContext) Delta(amount int) (*schema.Transaction, *Response, 
 	return c.Create(tcr)
 }
 
-// Utility wrapper for Create.
+// Utility wrapper for Create; see Create for possible errors.
 // Purchase a number of articles by ID with the current user; returns the created transaction.
 func (c *TransactionContext) Purchase(article int, count int) (*schema.Transaction, *Response, error) {
 	tcr := &schema.TransactionCreateRequest{
@@ -58,7 +58,7 @@ func (c *TransactionContext) Purchase(article int, count int) (*schema.Transacti
 	return c.Create(tcr)
 }
 
-// Utility wrapper for Create.
+// Utility wrapper for Create; see Create for possible errors.
 // Transfer an amount of funds from the current user to another by ID; returns the created transaction.
 func (c *TransactionContext) TransferFunds(recipient int, amount int) (*schema.Transaction, *Response, error) {
 	tcr := &schema.TransactionCreateRequest{
@@ -69,6 +69,12 @@ func (c *TransactionContext) TransferFunds(recipient int, amount int) (*schema.T
 }
 
 // POST /user/{userId}/transaction
+//   - ErrorUserNotFound
+//   - ErrorParameterMissing
+//   - ErrorParameterInvalid
+//   - ErrorAccountBalanceBoundary
+//   - ErrorTransactionBoundary
+//   - TODO ErrorArticleNotFound?
 //
 // Creates a raw transaction and returns it.
 // Consider using these wrappers for specific use-cases:
@@ -97,6 +103,8 @@ func (c *TransactionContext) Create(trc *schema.TransactionCreateRequest) (*sche
 }
 
 // GET /user/{userId}/transaction/{txId}
+//   - ErrorUserNotFound
+//   - ErrorTransactionNotFound
 //
 // Retrieves a transaction by ID.
 func (c *TransactionContext) Get(id int) (*schema.Transaction, *Response, error) {
@@ -117,6 +125,7 @@ func (c *TransactionContext) Get(id int) (*schema.Transaction, *Response, error)
 }
 
 // GET /user/{userId}/transaction
+//   - ErrorUserNotFound
 //
 // Retrieves a list of transactions issued by this user.
 // Pagination is possible via ListOpts, which can be nil.
@@ -139,6 +148,9 @@ func (c *TransactionContext) List(opt *ListOpts) ([]schema.Transaction, *Respons
 }
 
 // DELETE /user/{userId}/transaction
+//   - ErrorUserNotFound
+//   - ErrorTransactionNotFound
+//   - ErrorTransactionNotDeletable
 //
 // Revert a transaction by ID; returns the reversed transaction.
 // Not all transactions are reversible; check Transaction.IsReversible.
