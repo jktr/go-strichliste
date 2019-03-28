@@ -124,6 +124,27 @@ func (c *TransactionContext) Get(id int) (*schema.Transaction, *Response, error)
 	return &body.Transaction, resp, nil
 }
 
+// GET /transaction
+//
+// Retrieves a list of recent transactions.
+// Pagination is possible via ListOpts, which can be nil.
+func (c *TransactionClient) List(opt *ListOpts) ([]schema.Transaction, *Response, error) {
+	path := fmt.Sprintf("%s?%s", schema.EndpointTransaction, opt.values().Encode())
+
+	req, err := c.client.NewRequest(http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var body schema.MultiTransactionResponse
+	resp, err := c.client.Do(req, &body)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return body.Transactions, resp, nil
+}
+
 // GET /user/{userId}/transaction
 //   - ErrorUserNotFound
 //
