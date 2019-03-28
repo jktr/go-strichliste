@@ -1,6 +1,6 @@
 # go-strichliste: Go Bindings for the Strichliste API
 
-This library implements a REST client and bindings for the v2 API of
+This library implements a REST client and v2 API bindings for
 [hackerspace bootstrap's strichliste](https://github.com/strichliste/strichliste-backend),
 which is a pretty neat tally sheet server.
 
@@ -28,57 +28,57 @@ and is also very WIP.
 package main
 
 import (
-	"fmt"
-	s "github.com/jktr/go-strichliste"
-	ss "github.com/jktr/go-strichliste/schema"
-	"math"
-	"os"
-	"strconv"
-	"strings"
+    "fmt"
+    s "github.com/jktr/go-strichliste"
+    ss "github.com/jktr/go-strichliste/schema"
+    "math"
+    "os"
+    "strconv"
+    "strings"
 )
 
 func main() {
 
-	if len(os.Args) <= 2 {
-		fmt.Println("usage: example USER AMOUNT [COMMENT...]")
-		os.Exit(1)
-	}
+    if len(os.Args) <= 2 {
+        fmt.Println("usage: example USER AMOUNT [COMMENT...]")
+        os.Exit(1)
+    }
 
-	amount, err := strconv.ParseFloat(os.Args[2], 64)
-	if err != nil || math.Abs(amount) < 0.005 {
-		fmt.Println("error: invalid AMOUNT")
-		os.Exit(1)
-	}
+    amount, err := strconv.ParseFloat(os.Args[2], 64)
+    if err != nil || math.Abs(amount) < 0.005 {
+        fmt.Println("error: invalid AMOUNT")
+        os.Exit(1)
+    }
 
-	delta := ss.Currency(math.Round(amount * 100))
-	comment := ""
-	if len(os.Args) > 2 {
-		comment = strings.Join(os.Args[3:], " ")
-	}
+    delta := int(math.Round(amount * 100))
+    comment := ""
+    if len(os.Args) > 2 {
+        comment = strings.Join(os.Args[3:], " ")
+    }
 
-	client := s.NewClient(s.WithEndpoint(s.DefaultEndpoint))
+    client := s.NewClient(s.WithEndpoint(s.DefaultEndpoint))
 
-	user, _, err := client.User.GetByName(os.Args[1])
-	if err != nil {
-		// API-specific errors can be disambiguated like this
-		if er, ok := err.(*ss.ErrorResponse); ok {
-			if er.Class == ss.ErrorUserNotFound {
-				fmt.Println("error: no such user")
-				os.Exit(1)
-			}
-		} else {
-			fmt.Printf("error: %s", err.Error())
-			os.Exit(1)
-		}
-	}
+    user, _, err := client.User.GetByName(os.Args[1])
+    if err != nil {
+        // API-specific errors can be disambiguated like this
+        if er, ok := err.(*ss.ErrorResponse); ok {
+            if er.Class == ss.ErrorUserNotFound {
+                fmt.Println("error: no such user")
+                os.Exit(1)
+            }
+        } else {
+            fmt.Printf("error: %s", err.Error())
+            os.Exit(1)
+        }
+    }
 
-	tx, _, err := client.Transaction.Context(user.ID).WithComment(comment).Delta(delta)
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
-	}
+    tx, _, err := client.Transaction.Context(user.ID).WithComment(comment).Delta(delta)
+    if err != nil {
+        fmt.Println(err.Error())
+        os.Exit(1)
+    }
 
-	fmt.Println("new balance:", float64(tx.Issuer.Balance)/100)
+    fmt.Println("new balance:", float64(tx.Issuer.Balance)/100)
 }
 ```
 

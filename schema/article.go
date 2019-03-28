@@ -6,9 +6,9 @@ const (
 )
 
 type Article struct {
-	ID          ID        `json:"id"`
+	ID          int       `json:"id"`
 	Name        string    `json:"name"`
-	Value       Currency  `json:"amount"`
+	Value       int       `json:"amount"`
 	Barcode     *string   `json:"barcode"`
 	IsActive    bool      `json:"active"`
 	Precursor   *Article  `json:"precursor"`
@@ -20,19 +20,19 @@ type Article struct {
 	    - unclear accounting period
 	    - unclear interaction with "precursor" Articles
 	*/
-	UsageCount uint `json:"usageCount"`
+	UsageCount int `json:"usageCount"`
 }
 
 type ArticleCreateRequest struct {
-	Name    string   `json:"name"`
-	Value   Currency `json:"amount"`
-	Barcode Barcode  `json:"barcode,omitempty"`
+	Name    string `json:"name"`
+	Value   int    `json:"amount"`
+	Barcode string `json:"barcode,omitempty"`
 }
 
 type ArticleUpdateRequest struct {
-	Name    string   `json:"name"`
-	Value   Currency `json:"amount"`
-	Barcode Barcode  `json:"barcode,omitempty"`
+	Name    string `json:"name"`
+	Value   int    `json:"amount"`
+	Barcode string `json:"barcode,omitempty"`
 }
 
 type SingleArticleResponse struct {

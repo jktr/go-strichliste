@@ -22,7 +22,7 @@ type (
 
 	ErrorResponse struct {
 		Class   ErrorClass `json:"class"`
-		Code    uint       `json:"code"`
+		Code    int        `json:"code"`
 		Message string     `json:"message"`
 	}
 

@@ -6,11 +6,11 @@ const (
 )
 
 type User struct {
-	ID          ID        `json:"id"`
+	ID          int       `json:"id"`
 	Name        string    `json:"name"`
 	IsActive    bool      `json:"active"`
 	Email       *string   `json:"mailAddress"`
-	Balance     Currency  `json:"balance"`
+	Balance     int       `json:"balance"`
 	TimeCreated Timestamp `json:"created"`
 	TimeUpdated Timestamp `json:"updated"`
 }

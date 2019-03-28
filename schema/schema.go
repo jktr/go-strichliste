@@ -5,12 +5,7 @@ import (
 	"time"
 )
 
-type (
-	ID        uint
-	Barcode   string
-	Currency  int // in cents
-	Timestamp time.Time
-)
+type Timestamp time.Time
 
 const TimestampLayout = "2006-01-02 15:04:05"
 

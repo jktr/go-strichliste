@@ -24,7 +24,7 @@ func (s *ArticleClient) Create(article *schema.ArticleCreateRequest) (*schema.Ar
 	return &body.Article, resp, nil
 }
 
-func (s *ArticleClient) Get(id schema.ID) (*schema.Article, *Response, error) {
+func (s *ArticleClient) Get(id int) (*schema.Article, *Response, error) {
 	path := fmt.Sprintf("%s/%d", schema.EndpointArticle, id)
 
 	req, err := s.client.NewRequest(http.MethodGet, path, nil)
@@ -82,11 +82,11 @@ func (s *ArticleClient) LookupByName(name string, opt *ListOpts) ([]schema.Artic
 	return s.lookupByX("query", name, opt)
 }
 
-func (s *ArticleClient) LookupByBarcode(barcode schema.Barcode, opt *ListOpts) ([]schema.Article, *Response, error) {
+func (s *ArticleClient) LookupByBarcode(barcode string, opt *ListOpts) ([]schema.Article, *Response, error) {
 	return s.lookupByX("barcode", string(barcode), opt)
 }
 
-func (s *ArticleClient) Update(id schema.ID, article *schema.ArticleUpdateRequest) (*schema.Article, *Response, error) {
+func (s *ArticleClient) Update(id int, article *schema.ArticleUpdateRequest) (*schema.Article, *Response, error) {
 	path := fmt.Sprintf("%s/%d", schema.EndpointArticle, id)
 
 	req, err := s.client.NewRequest(http.MethodPost, path, article)
@@ -102,7 +102,7 @@ func (s *ArticleClient) Update(id schema.ID, article *schema.ArticleUpdateReques
 	return &body.Article, resp, nil
 }
 
-func (s *ArticleClient) Deactivate(id schema.ID) (*schema.Article, *Response, error) {
+func (s *ArticleClient) Deactivate(id int) (*schema.Article, *Response, error) {
 	path := fmt.Sprintf("%s/%d", schema.EndpointArticle, id)
 
 	req, err := s.client.NewRequest(http.MethodDelete, path, nil)

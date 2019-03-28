@@ -3,9 +3,9 @@ package schema
 const EndpointTransaction = "/transaction"
 
 type Transaction struct {
-	ID          ID        `json:"id"`
+	ID          int       `json:"id"`
 	Issuer      User      `json:"user"`
-	Value       Currency  `json:"amount"`
+	Value       int       `json:"amount"`
 	Comment     string    `json:"comment"`
 	TimeCreated Timestamp `json:"created"`
 
@@ -17,19 +17,19 @@ type Transaction struct {
 	To   *User `json:"recipient"`
 
 	// only when buying articles
-	Quantity *uint    `json:"quantity"`
+	Quantity *int     `json:"quantity"`
 	Article  *Article `json:"articleId"`
 }
 
 type TransactionCreateRequest struct {
 	// "amount" overwrites Article's value if ArticleID is present
-	Amount    Currency `json:"amount"`
-	Comment   string   `json:"comment,omitempty"`
-	Recipient *ID      `json:"recipient,omitempty"`
+	Amount    int    `json:"amount"`
+	Comment   string `json:"comment,omitempty"`
+	Recipient *int   `json:"recipient,omitempty"`
 
 	// only when sending articles
-	Quantity  *uint `json:"quantity,omitempty"`
-	ArticleID *ID `json:"articleId,omitempty"`
+	Quantity  *int `json:"quantity,omitempty"`
+	ArticleID *int `json:"articleId,omitempty"`
 }
 
 type SingleTransactionResponse struct {

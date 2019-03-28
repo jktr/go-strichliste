@@ -41,7 +41,7 @@ func (c *UserClient) getByX(x string) (*schema.User, *Response, error) {
 	return &body.User, resp, nil
 }
 
-func (c *UserClient) Get(id schema.ID) (*schema.User, *Response, error) {
+func (c *UserClient) Get(id int) (*schema.User, *Response, error) {
 	return c.getByX(fmt.Sprintf("%d", id))
 }
 
@@ -103,7 +103,7 @@ func (c *UserClient) updateByX(x string, user *schema.UserUpdateRequest) (*schem
 	return &body.User, resp, nil
 }
 
-func (c *UserClient) Update(id schema.ID, user *schema.UserUpdateRequest) (*schema.User, *Response, error) {
+func (c *UserClient) Update(id int, user *schema.UserUpdateRequest) (*schema.User, *Response, error) {
 	return c.updateByX(fmt.Sprintf("%d", id), user)
 }
 
@@ -111,7 +111,7 @@ func (c *UserClient) UpdateByName(name string, user *schema.UserUpdateRequest) (
 	return c.updateByX(name, user)
 }
 
-func (c *UserClient) Deactivate(id schema.ID) (*schema.User, *Response, error) {
+func (c *UserClient) Deactivate(id int) (*schema.User, *Response, error) {
 	return c.Update(id, &schema.UserUpdateRequest{
 		SetActive: new(bool), // false
 	})

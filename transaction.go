@@ -12,12 +12,12 @@ type (
 	}
 	TransactionContext struct {
 		TransactionClient
-		issuer  schema.ID
+		issuer  int
 		comment string
 	}
 )
 
-func (c *TransactionClient) Context(user schema.ID) *TransactionContext {
+func (c *TransactionClient) Context(user int) *TransactionContext {
 	ctx := &TransactionContext{
 		issuer: user,
 	}
@@ -31,22 +31,22 @@ func (c *TransactionContext) WithComment(comment string) *TransactionContext {
 	return &ctx
 }
 
-func (c *TransactionContext) Delta(amount schema.Currency) (*schema.Transaction, *Response, error) {
+func (c *TransactionContext) Delta(amount int) (*schema.Transaction, *Response, error) {
 	tcr := &schema.TransactionCreateRequest{
 		Amount: amount,
 	}
 	return c.Create(tcr)
 }
 
-func (c *TransactionContext) Deposit(amount schema.Currency) (*schema.Transaction, *Response, error) {
+func (c *TransactionContext) Deposit(amount int) (*schema.Transaction, *Response, error) {
 	return c.Delta(amount)
 }
 
-func (c *TransactionContext) Withdraw(amount schema.Currency) (*schema.Transaction, *Response, error) {
+func (c *TransactionContext) Withdraw(amount int) (*schema.Transaction, *Response, error) {
 	return c.Delta(-amount)
 }
 
-func (c *TransactionContext) Buy(article schema.ID, count uint) (*schema.Transaction, *Response, error) {
+func (c *TransactionContext) Buy(article int, count int) (*schema.Transaction, *Response, error) {
 	tcr := &schema.TransactionCreateRequest{
 		ArticleID: &article,
 		Quantity:  &count,
@@ -54,7 +54,7 @@ func (c *TransactionContext) Buy(article schema.ID, count uint) (*schema.Transac
 	return c.Create(tcr)
 }
 
-func (c *TransactionContext) TransferFunds(recipient schema.ID, amount schema.Currency) (*schema.Transaction, *Response, error) {
+func (c *TransactionContext) TransferFunds(recipient int, amount int) (*schema.Transaction, *Response, error) {
 	tcr := &schema.TransactionCreateRequest{
 		Amount:    amount,
 		Recipient: &recipient,
@@ -83,7 +83,7 @@ func (c *TransactionContext) Create(trc *schema.TransactionCreateRequest) (*sche
 	return &body.Transaction, resp, nil
 }
 
-func (c *TransactionContext) Get(id schema.ID) (*schema.Transaction, *Response, error) {
+func (c *TransactionContext) Get(id int) (*schema.Transaction, *Response, error) {
 	path := fmt.Sprintf("%s/%d%s/%d",
 		schema.EndpointUser, c.issuer, schema.EndpointTransaction, id)
 
@@ -118,7 +118,7 @@ func (c *TransactionContext) List(opt *ListOpts) ([]schema.Transaction, *Respons
 	return body.Transactions, resp, nil
 }
 
-func (c *TransactionContext) Revert(id schema.ID) (*schema.Transaction, *Response, error) {
+func (c *TransactionContext) Revert(id int) (*schema.Transaction, *Response, error) {
 	path := fmt.Sprintf("%s/%d%s/%d", schema.EndpointUser,
 		c.issuer, schema.EndpointTransaction, id)
 
