@@ -38,15 +38,7 @@ func (c *TransactionContext) Delta(amount int) (*schema.Transaction, *Response, 
 	return c.Create(tcr)
 }
 
-func (c *TransactionContext) Deposit(amount int) (*schema.Transaction, *Response, error) {
-	return c.Delta(amount)
-}
-
-func (c *TransactionContext) Withdraw(amount int) (*schema.Transaction, *Response, error) {
-	return c.Delta(-amount)
-}
-
-func (c *TransactionContext) Buy(article int, count int) (*schema.Transaction, *Response, error) {
+func (c *TransactionContext) Purchase(article int, count int) (*schema.Transaction, *Response, error) {
 	tcr := &schema.TransactionCreateRequest{
 		ArticleID: &article,
 		Quantity:  &count,
