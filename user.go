@@ -87,8 +87,8 @@ func (c *UserClient) Lookup(query string, opt *ListOpts) ([]schema.User, *Respon
 	return body.Users, resp, nil
 }
 
-func (c *UserClient) updateByX(x string, user *schema.UserUpdateRequest) (*schema.User, *Response, error) {
-	path := fmt.Sprintf("%s/%s", schema.EndpointUser, x)
+func (c *UserClient) Update(id int, user *schema.UserUpdateRequest) (*schema.User, *Response, error) {
+	path := fmt.Sprintf("%s/%d", schema.EndpointUser, id)
 
 	req, err := c.client.NewRequest(http.MethodPost, path, user)
 	if err != nil {
@@ -101,14 +101,6 @@ func (c *UserClient) updateByX(x string, user *schema.UserUpdateRequest) (*schem
 		return nil, resp, err
 	}
 	return &body.User, resp, nil
-}
-
-func (c *UserClient) Update(id int, user *schema.UserUpdateRequest) (*schema.User, *Response, error) {
-	return c.updateByX(fmt.Sprintf("%d", id), user)
-}
-
-func (c *UserClient) UpdateByName(name string, user *schema.UserUpdateRequest) (*schema.User, *Response, error) {
-	return c.updateByX(name, user)
 }
 
 func (c *UserClient) Deactivate(id int) (*schema.User, *Response, error) {
