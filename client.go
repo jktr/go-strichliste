@@ -14,8 +14,8 @@ import (
 
 const (
 	LibName         = "go-strichliste"
-	LibVersion      = "0.1.0"
-	ApiVersion      = "2:1.6.0" // compatible with this Strichliste API version
+	LibVersion      = "0.2.0"
+	ApiVersion      = "2:1.6.1" // compatible with this Strichliste API version
 	DefaultEndpoint = "https://demo.strichliste.org/api"
 )
 

@@ -9,7 +9,7 @@ type User struct {
 	ID          int       `json:"id"`
 	Name        string    `json:"name"`
 	IsActive    bool      `json:"active"`
-	Email       *string   `json:"mailAddress"`
+	Email       *string   `json:"email"`
 	Balance     int       `json:"balance"`
 	TimeCreated Timestamp `json:"created"`
 	TimeUpdated Timestamp `json:"updated"`
@@ -17,12 +17,12 @@ type User struct {
 
 type UserCreateRequest struct {
 	Name  string `json:"name"`
-	Email string `json:"mailAddress,omitempty"`
+	Email string `json:"email,omitempty"`
 }
 
 type UserUpdateRequest struct {
 	Name      string `json:"name,omitempty"`
-	Email     string `json:"mailAddress,omitempty"`
+	Email     string `json:"email,omitempty"`
 	SetActive *bool  `json:"active,omitempty"`
 }
 
