@@ -15,7 +15,7 @@ type AmountPreset struct {
 
 type Settings struct {
 	Common struct {
-		IdleTimer string `json:"idleTimer"` // TODO unused?
+		IdleTimeout string `json:"idleTimeout"`
 	} `json:"common"`
 
 	Paypal struct {
