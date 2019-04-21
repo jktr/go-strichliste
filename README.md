@@ -1,5 +1,7 @@
 # go-strichliste: Go Bindings for the Strichliste API
 
+[![GoDoc](https://godoc.org/github.com/jktr/go-strichliste?status.svg)](https://godoc.org/github.com/jktr/go-strichliste)
+
 This library implements a REST client and v2 API bindings for
 [hackerspace bootstrap's strichliste](https://github.com/strichliste/strichliste-backend),
 which is a pretty neat tally sheet server.
