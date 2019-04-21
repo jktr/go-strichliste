@@ -10,7 +10,7 @@ type Article struct {
 	Name        string    `json:"name"`
 	Value       int       `json:"amount"`
 	Barcode     *string   `json:"barcode"`
-	IsActive    bool      `json:"active"`
+	IsActive    bool      `json:"isActive"`
 	Precursor   *Article  `json:"precursor"`
 	TimeCreated Timestamp `json:"created"`
 

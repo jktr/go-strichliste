@@ -9,7 +9,7 @@ type Transaction struct {
 	Comment     string    `json:"comment"`
 	TimeCreated Timestamp `json:"created"`
 
-	IsReversed   bool `json:"deleted"`
+	IsReversed   bool `json:"isDeleted"`
 	IsReversible bool `json:"isDeletable"`
 
 	// only when sending money

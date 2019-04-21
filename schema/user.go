@@ -8,7 +8,8 @@ const (
 type User struct {
 	ID          int       `json:"id"`
 	Name        string    `json:"name"`
-	IsActive    bool      `json:"active"`
+	IsActive    bool      `json:"isActive"`
+	IsDisabled  bool      `json:"isDisabled"` // TODO
 	Email       *string   `json:"email"`
 	Balance     int       `json:"balance"`
 	TimeCreated Timestamp `json:"created"`
