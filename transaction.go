@@ -120,7 +120,7 @@ func (c *TransactionContext) Get(id int) (*schema.Transaction, *Response, error)
 	path := fmt.Sprintf("%s/%d%s/%d",
 		schema.EndpointUser, c.issuer, schema.EndpointTransaction, id)
 
-	req, err := c.client.NewRequest(http.MethodPost, path, nil)
+	req, err := c.client.NewRequest(http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
