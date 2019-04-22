@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -63,11 +64,12 @@ func (l *ListOpts) values() url.Values {
 	}
 
 	if l.Page > 0 {
-		v.Add("page", string(l.Page))
+		v.Add("page", strconv.Itoa(int(l.Page)))
 	}
 	if l.PerPage > 0 {
-		v.Add("limit", string(l.PerPage))
+		v.Add("limit", strconv.Itoa(int(l.PerPage)))
 	}
+
 	return v
 }
 
