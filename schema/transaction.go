@@ -25,7 +25,7 @@ type TransactionCreateRequest struct {
 	// "amount" overwrites Article's value if ArticleID is present
 	Amount    int    `json:"amount"`
 	Comment   string `json:"comment,omitempty"`
-	Recipient *int   `json:"recipient,omitempty"`
+	Recipient *int   `json:"recipientId,omitempty"`
 
 	// only when sending articles
 	Quantity  *int `json:"quantity,omitempty"`
