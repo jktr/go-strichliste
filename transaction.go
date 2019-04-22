@@ -51,8 +51,17 @@ func (c *TransactionContext) Delta(amount int) (*schema.Transaction, *Response, 
 // Utility wrapper for Create; see Create for possible errors.
 // Purchase a number of articles by ID with the current user; returns the created transaction.
 func (c *TransactionContext) Purchase(article int, count int) (*schema.Transaction, *Response, error) {
+
+	// XXX custom article price is not optional
+
+	a, resp, err := c.client.Article.Get(article)
+	if err != nil {
+		return nil, resp, err
+	}
+
 	tcr := &schema.TransactionCreateRequest{
-		ArticleID: &article,
+		Amount:    (-a.Value * count),
+		ArticleID: &a.ID,
 		Quantity:  &count,
 	}
 	return c.Create(tcr)
